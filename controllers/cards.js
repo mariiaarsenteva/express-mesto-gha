@@ -12,7 +12,7 @@ const deleteCard = (req, res) => {
     CardModel.findByIdAndRemove(req.params.cardId)
       .then((card) => {
         if (!card) {
-          res.status(400).send({ message: 'Запрашиваемая карточка не найдена' });
+          res.status(404).send({ message: 'Запрашиваемая карточка не найдена' });
           return;
         }
         res.status(200).send({ message: 'Карточка удалена' });
