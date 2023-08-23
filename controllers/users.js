@@ -1,5 +1,3 @@
-/* eslint no-underscore-dangle: 0 */
-
 const UserModel = require('../models/user');
 
 const getUsers = (req, res) => UserModel.find({})
@@ -37,7 +35,7 @@ const editUserData = (req, res) => {
     UserModel.findByIdAndUpdate(req.user._id, { name, about }, { new: 'true', runValidators: true })
       .then((user) => res.send(user))
       .catch((err) => {
-        if (err.name === 'validationError') {
+        if (err.name === 'ValidationError') {
           res.status(400).send({ message: err.message });
         } else {
           res.status(404).send({ message: 'Запрашиваемый пользователь не найден' });
