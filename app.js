@@ -5,14 +5,14 @@ require('dotenv').config();
 
 const router = express.Router();
 
-const { PORT } = process.env;
-const { MONGODB_URL } = process.env.MONGODB_URL;
+const { PORT, MONGODB_URL } = process.env;
 
-mongoose.connect(MONGODB_URL, {
-  useUnifiedTopology: true,
-  useNewUrlParser: true,
-});
+// mongoose.connect(MONGODB_URL, {
+//   useUnifiedTopology: true,
+//   useNewUrlParser: true,
+// });
 
+mongoose.connect(MONGODB_URL);
 const app = express();
 
 app.use(bodyParser.json());
