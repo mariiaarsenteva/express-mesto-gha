@@ -38,7 +38,7 @@ const editUserData = (req, res) => {
         if (err.name === 'ValidationError') {
           res.status(400).send({ message: err.message });
         } else {
-          res.status(404).send({ message: 'Запрашиваемый пользователь не найден' });
+          res.status(400).send({ message: 'Запрашиваемый пользователь не найден' });
         }
       });
   } else {
@@ -54,7 +54,7 @@ const editUserAvatar = (req, res) => {
         if (err.name === 'validationError') {
           res.status(400).send({ message: err.message });
         } else {
-          res.status(404).send({ message: 'Запрашиваемый пользователь не найден' });
+          res.status(400).send({ message: 'Запрашиваемый пользователь не найден' });
         }
       });
   } else {
