@@ -5,14 +5,19 @@ require('dotenv').config();
 
 const router = express.Router();
 
-const { PORT, MONGODB_URL } = process.env;
+const { PORT } = process.env;
 
 // mongoose.connect(MONGODB_URL, {
 //   useUnifiedTopology: true,
 //   useNewUrlParser: true,
 // });
 
-mongoose.connect(MONGODB_URL);
+mongoose.connect(process.env.MONGODB_URL);
+mongoose.connect('mongodb://localhost:27017/mestodb', {
+  useNewUrlParser: 'true',
+  useUnifiedTopology: 'true',
+});
+
 const app = express();
 
 app.use(bodyParser.json());
