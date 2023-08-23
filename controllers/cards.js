@@ -15,11 +15,11 @@ const deleteCard = (req, res) => {
           res.status(404).send({ message: 'Запрашиваемая карточка не найдена' });
           return;
         }
-        res.send({ message: 'Карточка удалена' });
+        res.status(200).send({ message: 'Карточка удалена' });
       })
       .catch(() => res.status(404).send({ message: 'Запрашиваемая карточка не найдена' }));
   } else {
-    res.status(400).send({ message: 'Некорректный _id' });
+    res.status(404).send({ message: 'Некорректный _id' });
   }
 };
 
