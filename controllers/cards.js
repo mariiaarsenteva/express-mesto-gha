@@ -15,7 +15,7 @@ const deleteCard = (req, res) => {
           res.status(404).send({ message: 'Запрашиваемая карточка не найдена' });
           return;
         }
-        res.status(200).send({ message: 'Карточка удалена' });
+        res.send({ message: 'Карточка удалена' });
       })
       .catch(() => res.status(404).send({ message: 'Запрашиваемая карточка не найдена' }));
   } else {
