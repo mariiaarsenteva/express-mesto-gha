@@ -9,7 +9,7 @@ const getCards = (req, res) => CardModel.find({})
 
 const deleteCard = (req, res) => {
   if (req.params.cardId.length === 24) {
-    CardModel.findById(req.params.cardId)
+    CardModel.findByIdAndRemove(req.params.cardId)
       .then((card) => {
         if (!card) {
           res.status(404).send({ message: 'Запрашиваемая карточка не найдена' });
