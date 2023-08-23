@@ -5,9 +5,9 @@ require('dotenv').config();
 
 const router = express.Router();
 
-const { PORT, MONGODB_URL } = process.env;
+const { PORT, MONGODB_URI } = process.env;
 
-mongoose.connect(MONGODB_URL, {
+mongoose.connect(MONGODB_URI, {
   useUnifiedTopology: true,
   useNewUrlParser: true,
 });
