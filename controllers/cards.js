@@ -17,7 +17,7 @@ const deleteCard = (req, res) => {
         }
         res.status(200).send({ message: 'Карточка удалена' });
       })
-      .catch(() => res.status(404).send({ message: 'Запрашиваемая карточка не найдена' }));
+      .catch(() => res.status(500).send({ message: 'На сервере произошла ошибка' }));
   } else {
     res.status(400).send({ message: 'Некорректный _id' });
   }
@@ -51,7 +51,7 @@ const dislikeCard = (req, res) => {
         }
         res.send(card);
       })
-      .catch(() => res.status(404).send({ message: 'Запрашиваемая карточка не найдена' }));
+      .catch(() => res.status(500).send({ message: 'На сервере произошла ошибка' }));
   } else {
     res.status(400).send({ message: 'Некорректный _id' });
   }
@@ -68,7 +68,7 @@ const likeCard = (req, res) => {
         }
         res.send(card);
       })
-      .catch(() => res.status(404).send({ message: 'Запрашиваемая карточка не найдена' }));
+      .catch(() => res.status(500).send({ message: 'На сервере произошла ошибка' }));
   } else {
     res.status(400).send({ message: 'Некорректный _id' });
   }

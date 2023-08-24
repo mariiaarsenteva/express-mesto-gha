@@ -3,22 +3,26 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 
+const helmet = require('helmet');
+
 const router = express.Router();
 
-const { PORT } = process.env;
+const { PORT, MONGODB_URL } = process.env;
 
-// mongoose.connect(MONGODB_URL, {
-//   useUnifiedTopology: true,
-//   useNewUrlParser: true,
-// });
-
-mongoose.connect(process.env.MONGODB_URL);
-mongoose.connect('mongodb://localhost:27017/mestodb', {
-  useNewUrlParser: 'true',
-  useUnifiedTopology: 'true',
+mongoose.connect(MONGODB_URL, {
+  useUnifiedTopology: true,
+  useNewUrlParser: true,
 });
 
+// mongoose.connect(process.env.MONGODB_URL);
+// mongoose.connect('mongodb://localhost:27017/mestodb', {
+//   useNewUrlParser: 'true',
+//   useUnifiedTopology: 'true',
+// });
+
 const app = express();
+
+app.use(helmet());
 
 app.use(bodyParser.json());
 app.use(router);
