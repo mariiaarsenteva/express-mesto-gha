@@ -1,13 +1,12 @@
+const helmet = require('helmet');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 
-const helmet = require('helmet');
-
 const router = express.Router();
 
-const { PORT, MONGODB_URL } = process.env;
+const { PORT, MONGODB_URL } = process.env; // переменные прописаны в .env
 
 mongoose.connect(MONGODB_URL, {
   useUnifiedTopology: true,
