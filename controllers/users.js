@@ -34,7 +34,10 @@ const editUserData = (req, res) => {
   if (req.user._id) {
     UserModel.findByIdAndUpdate(req.user._id, { name, about }, { new: 'true', runValidators: true })
       .orFail()
-      .then((user) => res.send(user))
+      .then((user) => {
+        console.log(user);
+        res.send(user);
+      })
       .catch((err) => {
         if (err.name === 'ValidationError') {
           res.status(400).send({ message: err.message });
