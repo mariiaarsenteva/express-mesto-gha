@@ -35,10 +35,6 @@ const editUserData = (req, res) => {
     UserModel.findByIdAndUpdate(req.user._id, { name, about }, { new: 'true', runValidators: true })
       .orFail()
       .then((user) => {
-        if (!user) {
-          res.status(404).send({ message: 'Запрашиваемый пользователь не найден' });
-          return;
-        }
         res.status(200).send(user);
       })
       .catch((err) => {
