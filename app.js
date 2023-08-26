@@ -28,7 +28,7 @@ app.use(router);
 
 app.use((req, res, next) => {
   req.user = {
-    _id: '64e287def8b18399a9dcb5a1',
+    _id: '',
   };
 
   next();
