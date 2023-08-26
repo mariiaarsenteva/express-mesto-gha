@@ -33,16 +33,17 @@ const editUserData = (req, res) => {
   const { name, about } = req.body;
   if (req.user._id) {
     UserModel.findByIdAndUpdate(req.user._id, { name, about }, { new: 'true', runValidators: true })
+      .orFail()
       .then((user) => res.send(user))
       .catch((err) => {
         if (err.name === 'ValidationError') {
           res.status(400).send({ message: err.message });
         } else {
-          res.status(404).send({ message: 'Запрашиваемый пользователь не найден' });
+          res.status(500).send({ message: 'На сервере произошла ошибка' });
         }
       });
   } else {
-    res.status(500).send({ message: 'На сервере произошла ошибка' });
+    res.status(404).send({ message: 'Запрашиваемый пользователь не найден' });
   }
 };
 
