@@ -28,7 +28,7 @@ app.use(router);
 
 app.use((req, res, next) => {
   req.user = {
-    _id: '64e2883bf8b18399a9dcb5a3',
+    _id: '64f34e13af0aea68dd401d98',
   };
 
   next();
@@ -41,6 +41,18 @@ app.use('*', (req, res) => {
   res.status(404).send({ message: 'Страница не найдена' });
 });
 
-app.timeout = 0;
+app.use((err, req, res, next) => {
+  // если у ошибки нет статуса, выставляем 500
+  const { statusCode = 500, message } = err;
 
+  res.status(statusCode).send({
+    // проверяем статус и выставляем сообщение в зависимости от него
+    message: statusCode === 500
+      ? 'На сервере произошла ошибка'
+      : message,
+  });
+  next();
+});
+
+app.timeout = 0;
 app.listen(PORT);
