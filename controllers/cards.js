@@ -56,39 +56,35 @@ const addCard = (req, res, next) => {
 };
 
 const dislikeCard = (req, res, next) => {
-  if (req.params.cardId.length === 24) {
-    CardModel.findByIdAndUpdate(req.params.cardId, { $pull: { likes: req.user._id } }, { new: true })
-      .orFail()
-      .populate(['owner', 'likes'])
-      .then((card) => res.status(HTTP_STATUS_OK).send(card))
-      .catch((err) => {
-        if (err instanceof mongoose.Error.CastError) {
-          next(new BadRequestError(`Некорректный _id карточки: ${req.params.cardId}`));
-        } else if (err instanceof mongoose.Error.DocumentNotFoundError) {
-          next(new NotFoundError(`Карточка по данному _id: ${req.params.cardId} не найдена.`));
-        } else {
-          next(err);
-        }
-      });
-  }
+  CardModel.findByIdAndUpdate(req.params.cardId, { $pull: { likes: req.user._id } }, { new: true })
+    .orFail()
+    .populate(['owner', 'likes'])
+    .then((card) => res.status(HTTP_STATUS_OK).send(card))
+    .catch((err) => {
+      if (err instanceof mongoose.Error.CastError) {
+        next(new BadRequestError(`Некорректный _id карточки: ${req.params.cardId}`));
+      } else if (err instanceof mongoose.Error.DocumentNotFoundError) {
+        next(new NotFoundError(`Карточка по данному _id: ${req.params.cardId} не найдена.`));
+      } else {
+        next(err);
+      }
+    });
 };
 
 const likeCard = (req, res, next) => {
-  if (req.params.cardId.length === 24) {
-    CardModel.findByIdAndUpdate(req.params.cardId, { $addToSet: { likes: req.user._id } }, { new: true })
-      .orFail()
-      .populate(['owner', 'likes'])
-      .then((card) => res.status(HTTP_STATUS_OK).send(card))
-      .catch((err) => {
-        if (err instanceof mongoose.Error.CastError) {
-          next(new BadRequestError(`Некорректный _id карточки: ${req.params.cardId}`));
-        } else if (err instanceof mongoose.Error.DocumentNotFoundError) {
-          next(new NotFoundError(`Карточка по данному _id: ${req.params.cardId} не найдена.`));
-        } else {
-          next(err);
-        }
-      });
-  }
+  CardModel.findByIdAndUpdate(req.params.cardId, { $addToSet: { likes: req.user._id } }, { new: true })
+    .orFail()
+    .populate(['owner', 'likes'])
+    .then((card) => res.status(HTTP_STATUS_OK).send(card))
+    .catch((err) => {
+      if (err instanceof mongoose.Error.CastError) {
+        next(new BadRequestError(`Некорректный _id карточки: ${req.params.cardId}`));
+      } else if (err instanceof mongoose.Error.DocumentNotFoundError) {
+        next(new NotFoundError(`Карточка по данному _id: ${req.params.cardId} не найдена.`));
+      } else {
+        next(err);
+      }
+    });
 };
 
 module.exports = {
