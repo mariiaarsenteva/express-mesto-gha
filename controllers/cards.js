@@ -12,22 +12,20 @@ const getCards = (req, res, next) => CardModel.find({})
   .catch(next);
 
 const deleteCard = (req, res, next) => {
-  if (req.params.cardId.length === 24) {
-    CardModel.findByIdAndRemove(req.params.cardId)
-      .orFail()
-      .then(() => {
-        res.status(HTTP_STATUS_OK).send({ message: 'Карточка удалена' });
-      })
-      .catch((err) => {
-        if (err instanceof mongoose.Error.CastError) {
-          next(new BadRequestError(`Некорректный _id карточки: ${req.params.cardId}`));
-        } else if (err instanceof mongoose.Error.DocumentNotFoundError) {
-          next(new NotFoundError(`Карточка по данному _id: ${req.params.cardId} не найдена.`));
-        } else {
-          next(err);
-        }
-      });
-  }
+  CardModel.findByIdAndRemove(req.params.cardId)
+    .orFail()
+    .then(() => {
+      res.status(HTTP_STATUS_OK).send({ message: 'Карточка удалена' });
+    })
+    .catch((err) => {
+      if (err instanceof mongoose.Error.CastError) {
+        next(new BadRequestError(`Некорректный _id карточки: ${req.params.cardId}`));
+      } else if (err instanceof mongoose.Error.DocumentNotFoundError) {
+        next(new NotFoundError(`Карточка по данному _id: ${req.params.cardId} не найдена.`));
+      } else {
+        next(err);
+      }
+    });
 };
 
 const addCard = (req, res, next) => {
