@@ -20,9 +20,9 @@ const deleteCard = (req, res, next) => {
       })
       .catch((err) => {
         if (err instanceof mongoose.Error.CastError) {
-          next(new BadRequestError(`Некорректный _id карточки: ${req.params.userId}`));
+          next(new BadRequestError(`Некорректный _id карточки: ${req.params.cardId}`));
         } else if (err instanceof mongoose.Error.DocumentNotFoundError) {
-          next(new NotFoundError(`Карточка по данному _id: ${req.params.userId} не найдена.`));
+          next(new NotFoundError(`Карточка по данному _id: ${req.params.cardId} не найдена.`));
         } else {
           next(err);
         }
@@ -40,7 +40,7 @@ const addCard = (req, res, next) => {
         .then((data) => res.status(HTTP_STATUS_CREATED).send(data))
         .catch((err) => {
           if (err instanceof mongoose.Error.DocumentNotFoundError) {
-            next(new NotFoundError(`Пользователь по данному _id: ${req.params.userId} не найден.`));
+            next(new NotFoundError(`Карточка по данному _id: ${req.params.cardId} не найдена.`));
           } else {
             next(err);
           }
@@ -63,9 +63,9 @@ const dislikeCard = (req, res, next) => {
       .then((card) => res.status(HTTP_STATUS_OK).send(card))
       .catch((err) => {
         if (err instanceof mongoose.Error.CastError) {
-          next(new BadRequestError(`Некорректный _id карточки: ${req.params.userId}`));
+          next(new BadRequestError(`Некорректный _id карточки: ${req.params.cardId}`));
         } else if (err instanceof mongoose.Error.DocumentNotFoundError) {
-          next(new NotFoundError(`Карточка по данному _id: ${req.params.userId} не найдена.`));
+          next(new NotFoundError(`Карточка по данному _id: ${req.params.cardId} не найдена.`));
         } else {
           next(err);
         }
@@ -81,9 +81,9 @@ const likeCard = (req, res, next) => {
       .then((card) => res.status(HTTP_STATUS_OK).send(card))
       .catch((err) => {
         if (err instanceof mongoose.Error.CastError) {
-          next(new BadRequestError(`Некорректный _id карточки: ${req.params.userId}`));
+          next(new BadRequestError(`Некорректный _id карточки: ${req.params.cardId}`));
         } else if (err instanceof mongoose.Error.DocumentNotFoundError) {
-          next(new NotFoundError(`Карточка по данному _id: ${req.params.userId} не найдена.`));
+          next(new NotFoundError(`Карточка по данному _id: ${req.params.cardId} не найдена.`));
         } else {
           next(err);
         }
