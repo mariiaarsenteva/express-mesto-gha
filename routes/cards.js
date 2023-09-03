@@ -8,6 +8,7 @@ const {
 } = require('../controllers/cards');
 
 router.get('/', getCards);
+
 router.delete('/:cardId', celebrate({
   params: Joi.object().keys({
     cardId: Joi.string().length(24).hex().required(),
