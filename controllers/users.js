@@ -7,9 +7,11 @@ const BadRequestError = require('../errors/BadRequestError');
 const NotFoundError = require('../errors/NotFoundError');
 const ConflictError = require('../errors/ConflictError');
 
-const getUsers = (req, res, next) => UserModel.find({})
-  .then((users) => res.status(HTTP_STATUS_OK).send(users))
-  .catch(next);
+const getUsers = (req, res, next) => {
+  UserModel.find({})
+    .then((users) => res.status(HTTP_STATUS_OK).send(users))
+    .catch(next);
+};
 
 const getUserById = (req, res, next) => {
   UserModel.findById(req.params.userId)
