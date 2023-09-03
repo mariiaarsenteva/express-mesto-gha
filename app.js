@@ -28,8 +28,8 @@ app.use(limiter);
 app.use(bodyParser.json());
 app.use(router);
 
-app.use('/users', require('./routes/users'));
-app.use('/cards', require('./routes/cards'));
+// app.use('/users', require('./routes/users'));
+// app.use('/cards', require('./routes/cards'));
 app.use('/', require('./routes/index'));
 
 app.use(errors()); // обработчик ошибок celebrate
