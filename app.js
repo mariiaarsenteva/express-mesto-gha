@@ -1,7 +1,9 @@
 const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const { errors } = require('celebrate');
 require('dotenv').config();
 
 const router = express.Router();
@@ -13,33 +15,24 @@ mongoose.connect(MONGODB_URL, {
   useNewUrlParser: true,
 });
 
-// mongoose.connect(process.env.MONGODB_URL);
-// mongoose.connect('mongodb://localhost:27017/mestodb', {
-//   useNewUrlParser: 'true',
-//   useUnifiedTopology: 'true',
-// });
-
 const app = express();
 
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // за 15 минут
+  max: 100, // можно совершить максимум 100 запросов с одного IP
+});
+
 app.use(helmet());
+app.use(limiter);
 
 app.use(bodyParser.json());
 app.use(router);
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '64f34e13af0aea68dd401d98',
-  };
-
-  next();
-});
-
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
+app.use('/', require('./routes/index'));
 
-app.use('*', (req, res) => {
-  res.status(404).send({ message: 'Страница не найдена' });
-});
+app.use(errors()); // обработчик ошибок celebrate
 
 app.use((err, req, res, next) => {
   // если у ошибки нет статуса, выставляем 500

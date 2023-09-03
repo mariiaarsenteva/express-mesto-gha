@@ -1,8 +1,11 @@
 const { HTTP_STATUS_OK, HTTP_STATUS_CREATED } = require('http2').constants;
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const UserModel = require('../models/user');
 const BadRequestError = require('../errors/BadRequestError');
 const NotFoundError = require('../errors/NotFoundError');
+const ConflictError = require('../errors/ConflictError');
 
 const getUsers = (req, res, next) => UserModel.find({})
   .then((users) => res.status(HTTP_STATUS_OK).send(users))
@@ -25,15 +28,27 @@ const getUserById = (req, res, next) => {
     });
 };
 
-const addUser = (req, res, next) => UserModel.create({ ...req.body })
-  .then((user) => res.status(HTTP_STATUS_CREATED).send(user))
-  .catch((err) => {
-    if (err instanceof mongoose.Error.ValidationError) {
-      next(new BadRequestError(err.message));
-    } else {
-      next(err);
-    }
-  });
+const addUser = (req, res, next) => {
+  const {
+    name, about, avatar, email, password,
+  } = req.body;
+  bcrypt.hash(password, 10)
+    .then((hash) => UserModel.create({
+      name, about, avatar, email, password: hash,
+    })
+      .then((user) => res.status(HTTP_STATUS_CREATED).send({
+        name: user.name, about: user.about, avatar: user.avatar, email: user.email, _id: user.id,
+      }))
+      .catch((err) => {
+        if (err instanceof mongoose.Error.ValidationError) {
+          next(new BadRequestError(err.message));
+        } else if (err.code === 11000) {
+          next(new ConflictError(`Пользователь с email: ${email} уже зарегистрирован`));
+        } else {
+          next(err);
+        }
+      }));
+};
 
 const editUserData = (req, res, next) => {
   const { name, about } = req.body;
@@ -72,6 +87,24 @@ const editUserAvatar = (req, res, next) => {
   }
 };
 
+const login = (req, res, next) => {
+  const { email, password } = req.body;
+  return UserModel.findUserByCredentials(email, password)
+    .then((user) => {
+      const token = jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' });
+      res.send({ token });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
+const getUser = (req, res, next) => {
+  UserModel.findById(req.user._id)
+    .then((user) => res.status(HTTP_STATUS_OK).send(user))
+    .catch(next);
+};
+
 module.exports = {
-  getUsers, getUserById, addUser, editUserData, editUserAvatar,
+  getUsers, getUserById, addUser, editUserData, editUserAvatar, login, getUser,
 };
