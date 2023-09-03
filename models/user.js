@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-const validator = require('validator');
+// const validator = require('validator');
 const bcrypt = require('bcrypt');
 const UnauthorizedError = require('../errors/UnauthorizedError');
 const ForbiddenError = require('../errors/ForbiddenError');
-const { emailRegex } = require('../utils/constants');
+const { emailRegex, httpRegex } = require('../utils/constants');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -22,7 +22,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
     validate: ({
-      validator: (value) => validator.isURL(value, { protocols: ['http', 'https'], require_tld: true, require_protocol: true }),
+      validator(url) {
+        return httpRegex.test(url);
+      },
       message: 'Неверный URL',
     }),
   },
