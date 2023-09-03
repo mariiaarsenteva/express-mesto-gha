@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const validator = require('validator');
+const { httpRegex } = require('../utils/constants');
+// const validator = require('validator');
 
 const cardSchema = new mongoose.Schema({
   name: {
@@ -12,7 +13,9 @@ const cardSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Поле должно быть заполнено'],
     validate: ({
-      validator: (value) => validator.isURL(value, { protocols: ['http', 'https'], require_tld: true, require_protocol: true }),
+      validator(url) {
+        return httpRegex.test(url);
+      },
       message: 'Неверный URL',
     }),
   },
